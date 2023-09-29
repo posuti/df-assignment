@@ -1,0 +1,22 @@
+.app-container {
+    min-height: 100vh;
+    min-width: 100%;
+
+    background-image: url("/public/images/gradient-dark.svg");
+    background-size: cover;
+
+    display: flex;
+    justify-content: center;
+}
+
+.app-panels-container {
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);
+    background-color: rgba(39,39,48,.5);
+    padding: 40px 40px;
+    margin: 40px;
+    width: 80%;
+}
+
+.app-panel {
+    margin: 10px 0px;
+}
