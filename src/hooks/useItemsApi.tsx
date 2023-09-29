@@ -1,6 +1,24 @@
+import { useEffect, useState } from "react";
 import { useItemsContext } from "../contexts/ItemsProvider";
 import ItemsApi from "../services/ItemsApi";
-import { Item, ItemStatus } from "../shared/types";
+import { ApiStatus, Item, ItemStatus } from "../shared/types";
+
+export const useGetAllItems = (dispatch:Function) => {
+    const [status, setStatus] = useState(ApiStatus.connecting);
+
+    useEffect(() => {
+        setStatus(ApiStatus.connecting);
+        let abort = false;
+        ItemsApi.GetAllItems().then((newItems: any) => {
+            if (abort) return;
+            setStatus(ApiStatus.ready);
+            dispatch({ type: "inited", payload: newItems });
+        }, (err) => setStatus(ApiStatus.error))
+        return (() => { abort = true })
+    }, []);
+
+    return status;
+}
 
 export const useAddItem = () => {
     const { dispatch } = useItemsContext();

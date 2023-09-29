@@ -3,28 +3,16 @@ import { ReactNode, createContext } from "react";
 import { ApiStatus, Item } from '../shared/types';
 import { useItemsSocket } from '../hooks/useItemsSocketApi';
 import ItemsApi from '../services/ItemsApi';
+import { useGetAllItems } from '../hooks/useItemsApi';
 
 interface Props {
     children: ReactNode;
 }
 
 export const ItemsProvider = (props: Props) => {
-
     const [items, dispatch] = useReducer(itemsReducer, []);
-    const [status, setStatus] = useState(ApiStatus.connecting);
-
+    const status = useGetAllItems(dispatch);
     const socketStatus = useItemsSocket(dispatch);
-
-    useEffect(() => {
-        setStatus(ApiStatus.connecting);
-        let abort = false;
-        ItemsApi.GetAllItems().then((newItems: any) => {
-            if (abort) return;
-            setStatus(ApiStatus.ready);
-            dispatch({ type: "inited", payload: newItems });
-        }, (err) => setStatus(ApiStatus.error))
-        return (() => { abort = true })
-    }, []);
 
     const contextValue = { items, status, socketStatus, dispatch };
     return <ItemsContext.Provider value={contextValue}>{props.children}</ItemsContext.Provider>
