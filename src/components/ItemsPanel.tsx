@@ -1,8 +1,8 @@
 
-import { Alert, Box } from '@mui/material';
 import { useItemsContext } from '../contexts/ItemsProvider';
 import ItemsTable from './ItemsTable';
 import { Item } from '../shared/types';
+import SoccetStatusPanel from './SocketStatusPanel';
 import { useDeleteItem } from '../hooks/useItemsApi';
 
 function ItemsPanel() {
@@ -19,7 +19,7 @@ function ItemsPanel() {
 
     return (
         <>
-            <SoccetStatus status={socketStatus} />
+            <SoccetStatusPanel status={socketStatus} />
             <ItemsTable status={status} items={items as Item[]} onDelete={(itemId: string) => onDelete(itemId)} />
         </>
     );
@@ -28,17 +28,3 @@ function ItemsPanel() {
 
 export default ItemsPanel;
 
-function SoccetStatus({ status }: { status: string }) {
-
-    if (status === "connected") return (
-        <Box sx={{ width: '100%' }}>
-            <Alert sx={{ mb: 2 }} > Soccet status: connected </Alert>
-        </Box>
-    );
-
-    return (
-        <Box sx={{ width: '100%' }}>
-            <Alert sx={{ mb: 2 }} severity="warning">Soccet status: {status}</Alert>
-        </Box>
-    )
-}
